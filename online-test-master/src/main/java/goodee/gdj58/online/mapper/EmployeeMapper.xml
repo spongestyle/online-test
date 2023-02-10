@@ -2,6 +2,18 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.EmployeeMapper">
 	
+	
+	<!-- 학생회원가입 IDCK -->
+	<select id="selectEmpId" 
+	parameterType = "String"
+	resultType ="String">
+	
+		SELECT emp_id empId 
+		FROM employee
+		WHERE emp_id =#{empId}
+	
+	</select>
+	
 	<update id="updateEmployeePw"
 		parameterType="java.util.Map">
 		UPDATE employee
@@ -45,5 +57,20 @@
 			employee
 		ORDER BY emp_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	<select id = "selectEmployeeCount"
+		 resultType="int"
+		 parameterType="java.lang.String">
+		 
+		SELECT
+			count(*) empCount
+		FROM
+			employee
+		<where>
+			<if test="searchWord != null || searchWord != ''">
+				emp_name LIKE CONCAT('%', #{searchWord}, '%')
+			</if>
+		</where>
 	</select>
 </mapper>

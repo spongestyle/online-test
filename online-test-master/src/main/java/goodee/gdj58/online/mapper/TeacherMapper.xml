@@ -1,7 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.TeacherMapper">
+
+
+	<!-- 강사로그인ck -->
+	<select id="selectTeacherId" 
+	parameterType = "String"
+	resultType ="String">
 	
+		SELECT teacher_id teacherId 
+		FROM teacher
+		WHERE teacher_id =#{teacherId}
+	
+	</select>	
+	
+	
+	<!-- 강사로그인 -->
+	<select id="login"
+		resultType="goodee.gdj58.online.vo.Teacher"
+		parameterType="goodee.gdj58.online.vo.Teacher">
+		SELECT
+			teacher_no teacherNo
+			, teacher_id teacherId
+			, teacher_name teacherName
+		FROM teacher
+		WHERE teacher_id = #{teacherId} AND teacher_pw = PASSWORD(#{teacherPw})
+	</select>	
+	
+	
+	
+	<!-- 강사 삭제 -->
 	<delete id="deleteTeacher"
 		parameterType="int">
 		DELETE
@@ -9,12 +37,18 @@
 		WHERE teacher_no = #{teacherNo}
 	</delete>
 	
+	
+	
+	<!-- 강사 등록 -->
 	<insert id="insertTeacher"
 		 parameterType="goodee.gdj58.online.vo.Teacher">
 		INSERT INTO Teacher (teacher_id, teacher_pw, teacher_name)
 		VALUES (#{teacherId}, PASSWORD(#{teacherPw}), #{teacherName})
 	</insert>
 
+
+
+	<!-- 강사 리스트 -->
 	<select id = "selectTeacherList"
 		 resultType="goodee.gdj58.online.vo.Teacher"
 		 parameterType="java.util.Map">
@@ -25,7 +59,29 @@
 			, teacher_name teacherName
 		FROM
 			Teacher
+		<where>
+			<if test="searchWord != null || searchWord != ''">
+				teacher_name LIKE CONCAT('%', #{searchWord}, '%')
+			</if>
+		</where>	
 		ORDER BY teacher_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
+	</select>
+	
+	
+	<!-- 총 강사리스트 count -->
+	<select id = "selectTeacherCount"
+		 resultType="int"
+		 parameterType="java.lang.String">
+		 
+		SELECT
+			count(*) teacherCount
+		FROM
+			teacher
+		<where>
+			<if test="searchWord != null || searchWord != ''">
+				teacher_name LIKE CONCAT('%', #{searchWord}, '%')
+			</if>
+		</where>
 	</select>
 </mapper>

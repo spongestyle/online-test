@@ -1,20 +1,55 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="goodee.gdj58.online.mapper.StudentMapper">
+
+	<!-- 학생회원가입 IDCK -->
+	<select id="selectStudentId" 
+	parameterType = "String"
+	resultType ="String">
 	
-	<delete id="deleteStudent"
-		parameterType="int">
-		DELETE
+		SELECT student_id studentId 
 		FROM student
-		WHERE student_no = #{studentNo}
+		WHERE student_id =#{studentId}
+	
+	</select>
+	
+	<!-- 학생 로그인 -->
+	<select id="login"
+		resultType="goodee.gdj58.online.vo.Student"
+		parameterType="goodee.gdj58.online.vo.Student">
+		SELECT
+			student_no studentNo
+			, student_id studentId
+			, student-name studentName
+		FORM student
+		WHERE student_id =#{studentId} AND student_pw = PASSWORD{#{studentPw})
+	</select>
+	
+	
+	
+	
+	
+	<!-- 학생 탈퇴 -->
+	<delete id ="deleteStudent"
+		parameterType ="int">
+		DELETE	
+		FROM Student
+		WHERE student_no = #{studentNo}	
 	</delete>
 	
-	<insert id="insertStudent"
-		 parameterType="goodee.gdj58.online.vo.Student">
-		INSERT INTO student (student_id, student_pw, student_name)
+	
+	
+	<!-- 학생 가입 -->
+	<insert id = "insertStudent"
+		parameterType="goodee.gdj58.online.vo.Student">
+		INSERT INTO Student (student_id, student_pw, student_name)
 		VALUES (#{studentId}, PASSWORD(#{studentPw}), #{studentName})
 	</insert>
-
+	
+	
+	
+	
+	<!-- 학생 리스트 조회 -->
 	<select id = "selectStudentList"
 		 resultType="goodee.gdj58.online.vo.Student"
 		 parameterType="java.util.Map">
@@ -25,7 +60,33 @@
 			, student_name studentName
 		FROM
 			student
+		<where>
+			<if test="searchWord != null || searchWord != ''">
+				student_name LIKE CONCAT('%', #{searchWord}, '%')
+			</if>
+		</where>
 		ORDER BY student_no DESC
 		LIMIT #{beginRow}, #{rowPerPage}
+	</select>	
+
+
+
+
+
+
+	<!-- 학생 리스트 조회count  -->
+	<select id = "selectStudentCount"
+		 resultType="int"
+		 parameterType="java.lang.String">
+		 
+		SELECT
+			count(*) studentCount
+		FROM
+			student
+		<where>
+			<if test="searchWord != null || searchWord != ''">
+				student_name LIKE CONCAT('%', #{searchWord}, '%')
+			</if>
+		</where>
 	</select>
 </mapper>

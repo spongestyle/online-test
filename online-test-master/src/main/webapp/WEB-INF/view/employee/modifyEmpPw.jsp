@@ -18,6 +18,7 @@
 				<td>새로운 비밀번호</td>
 				<td><input type="password" name="newPw"></td>
 			</tr>
+			<!-- 비밀번호 중복 유효성검사  -->		
 		</table>
 		<button type="submit">수정</button>
 	</form>
