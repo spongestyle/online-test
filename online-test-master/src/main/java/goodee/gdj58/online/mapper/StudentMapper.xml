@@ -20,10 +20,10 @@
 		SELECT
 			student_no studentNo
 			, student_id studentId
-			, student-name studentName
-		FORM student
-		WHERE student_id =#{studentId} AND student_pw = PASSWORD{#{studentPw})
-	</select>
+			, student_name studentName
+		FROM student
+		WHERE student_id = #{studentId} AND student_pw = PASSWORD(#{studentPw})
+	</select>	
 	
 	
 	
