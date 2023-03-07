@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodee.gdj58.online.mapper.ExampleMapper">
+
+
+	<!--  example 수정 -->
+	<update id="updateExample"
+		parameterType="goodee.gdj58.online.vo.Example">
+		
+		UPDATE example
+		SET (example_title = #{exampleTitle}, example_ox = #{example_ox})
+		WHERE example_no = #{exampleNo}
+	
+	</update>
+	
+	<!-- example 삭제 -->
+	<delete id="deleteExample"
+		parameterType="int">
+	
+		DELETE
+		FROM example
+		WHERE question_no = #{questionNo}	
+	</delete>
+	
+	<!-- example 추가 -->
+	<insert id="insertExample"
+		parameterType="java.util.Map">
+	
+		INSERT
+			INTO example(question_no, example_idx, example_title, example_ox)
+			VALUES(#{questionNo}
+				, #{exampleIdx}
+				, #{exampleTitle}
+				, #{exampleOx})
+			
+	</insert>
+
+
+	<!-- example List -->
+	<select id="selectExampleList"
+	resultType="goodee.gdj58.online.vo.Example"
+	parameterType="int">
+	
+	SELECT
+		example_no exampleNo
+		, question_no questionNo
+		, example_idx exampleIdx
+		, example_title exampleTilte
+		, example_ox exampleOx
+	FROM example
+	WHERE question_no = #{question_no}
+	
+	</select>
+
+
+
+</mapper>

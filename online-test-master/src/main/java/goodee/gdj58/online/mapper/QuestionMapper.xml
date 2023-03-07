@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="goodee.gdj58.online.mapper.QuestionMapper">
+
+	<!--  question 수정 -->
+	<update id="updateQuestion"
+		parameterType="goodee.gdj58.online.vo.Question">
+		
+		UPDATE question
+		SET (question_title=#{questionTitle})
+		WHERE question_no = #{questionNo}
+		
+	</update>
+	
+	<!-- question 삭제 -->
+	<delete id="deleteQuestion"
+		parameterType="int">
+	
+		DELETE
+		FROM question
+		WHERE question_no = #{questionNo}	
+	</delete>
+
+
+	<!-- add question -->
+	<insert id="insertQuestion"
+		parameterType="java.util.Map">
+		
+		INSERT
+			INTO question(test_no, question_idx, question_title)
+			VALUES(#{paramap.testNo}
+				, #{paramap.questionIdx}
+				, #{paramap.questionTitle})
+	
+		<selectKey
+			keyProperty="paramap.questionNo"
+			resultType="int"
+			order="AFTER">
+				SELECT MAX(question_no)
+				FROM question
+		</selectKey>
+	</insert>
+
+
+	<!--  question List -->
+	<select id="selectQuestionList"
+	resultType="goodee.gdj58.online.vo.Question"
+	parameterType="int">
+	
+	SELECT
+		Question_no questionNo
+		, test_no testNo
+		, question_idx questionIdx
+		, question_title questionTitle
+	FROM question
+	WHERE test_no = #{testNo}
+
+	</select>
+
+
+</mapper>
